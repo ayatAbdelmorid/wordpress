@@ -41,6 +41,16 @@
 		{
 			"name": "create post",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL3dvcmRwcmVzcyIsImlhdCI6MTYzOTM0ODg1MCwibmJmIjoxNjM5MzQ4ODUwLCJleHAiOjE2Mzk5NTM2NTAsImRhdGEiOnsidXNlciI6eyJpZCI6IjEifX19._Llq7BUJRtwtwvtn7Gm8HB9d8ovzJMh6HTL6MD1QhxM",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -48,7 +58,7 @@
 					"formdata": [
 						{
 							"key": "title",
-							"value": "custom api post2020",
+							"value": "custom api post2",
 							"type": "text"
 						},
 						{
@@ -59,7 +69,8 @@
 						{
 							"key": "author",
 							"value": "1",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "thumbnail",
@@ -171,7 +182,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://wrordpresscreiden.pro/index.php/wp-json/twentytwenty/v1/custom_post_type/35\n",
+					"raw": "http://wrordpresscreiden.pro/index.php/wp-json/twentytwenty/v1/custom_post_type/45\n",
 					"protocol": "http",
 					"host": [
 						"wrordpresscreiden",
@@ -183,7 +194,7 @@
 						"twentytwenty",
 						"v1",
 						"custom_post_type",
-						"35\n"
+						"45\n"
 					]
 				}
 			},
@@ -208,6 +219,44 @@
 						"v1",
 						"custom_post_type",
 						"35"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "12345678",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://wrordpresscreiden.pro/index.php/wp-json/jwt-auth/v1/token",
+					"protocol": "http",
+					"host": [
+						"wrordpresscreiden",
+						"pro"
+					],
+					"path": [
+						"index.php",
+						"wp-json",
+						"jwt-auth",
+						"v1",
+						"token"
 					]
 				}
 			},

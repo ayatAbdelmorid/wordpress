@@ -823,9 +823,9 @@ function create_custom_post_type() {
 	'capability_type'    => 'post',
 	'has_archive' => false,
 	'hierarchical' => true,
-	// 'show_in_rest' => true,
-    // 'rest_base'    => 'custom_posts_type',
-	// 'rest_controller_class' => 'WP_REST_Posts_Controller',
+	'show_in_rest' => true,
+    'rest_base'    => 'custom_posts_type',
+	'rest_controller_class' => 'WP_REST_Posts_Controller',
 
 	);
 	register_post_type('custom_post_type', $args);
@@ -835,6 +835,10 @@ function create_custom_post_type() {
 	/*Custom Post type end*/
 
 	add_action('rest_api_init', function () {
+		register_rest_route( 'twentytwenty/v1', 'login/api',array(
+			'methods'  => 'POST',
+			'callback' => 'get_token'
+  		));
 		register_rest_route( 'twentytwenty/v1', 'custom_posts_type',array(
 					  'methods'  => 'GET',
 					  'callback' => 'get_custom_posts_type'
@@ -902,6 +906,7 @@ function create_custom_post_type() {
 			'post_status' => $request['status'],
 			'post_excerpt' => $request['excerpt'],
 			'post_name' => $request['slug'],
+			
 
 		   );
 		   $data=array_filter($args);
@@ -921,13 +926,16 @@ function create_custom_post_type() {
 			//create post
 
 	function insert_custom_post_type(WP_REST_Request  $request) {
-		$args = array(
+
+		$args =array(
 			'post_type' => 'custom_post_type',
 			'post_title'   =>$request['title'],
 			'post_content' => $request['editor'],
 			'post_status' => $request['status'],
 			'post_excerpt' => $request['excerpt'],
 			'post_name' => $request['slug'],
+			// 'post_author' => 1,
+
 
 		);
 		
@@ -947,7 +955,7 @@ function create_custom_post_type() {
 			}
 		
 		$data=array_filter($args);
-		$post = register_post_type('custom_post_type',$data);
+		$post = wp_insert_post($data);
 	
 		$response = new WP_REST_Response($post);
 		$response->set_status(200);
@@ -969,11 +977,58 @@ function create_custom_post_type() {
 		}
 		//soft delete
 		wp_trash_post($request['id'] );
-		//hard delete
+
+
+		/*
+		*hard delete
+		*remove record from database
+
+		*/ 
 		// remove_all_actions('wp_trash_post');
         // wp_delete_post($request['id'], true );
+
 		$response = new WP_REST_Response($post);
 		$response->set_status(200);
-	
+
 		return $response;
 	}
+	
+	//try to to create token
+	// function get_token($request) {
+
+	// 	$args = array(
+    //         'user_login'=>$request['username'],
+	// 		'email' => $request['email'],
+	// 		'user_password' => $request['password'],
+
+    // 	);
+	// 	$credentials=array_filter($args);
+	// 	// if (empty($args['username'])) {
+	// 	// 	$credentials;
+	// 	// }
+
+
+	// 	// if (empty($post)) {
+	// 	// return new WP_Error( 'empty_post', 'There are no post to delete', array('status' => 404) );	
+	// 	// }
+	// 	// wp_authenticate
+	// 	$user = wp_signon($credentials, false);
+	// 	$current_user=wp_set_current_user($user->ID);
+	// 	 wp_set_auth_cookie($user->ID);
+	// 	 $id_token = get_user_meta( $user->ID, 'auth0_id_token', false); 
+
+	// 	//  return  $id_token;
+		
+		
+	// 	//  return wp_create_nonce( 'wp_rest' );
+	// 	//  return wp_nonce_tick();
+	// 	//  return wp_get_session_token();
+	// 	//  return wp_create_nonce( 'wp_rest' );;
+
+	// 	// $token = wp_authenticate(  $request['username'],$request['password'] );
+	// 	// is_user_logged_in()
+	// 	$response = new WP_REST_Response($post);
+	// 	$response->set_status(200);
+	
+	// 	return $response;
+	// }
