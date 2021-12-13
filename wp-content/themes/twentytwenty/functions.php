@@ -903,7 +903,7 @@ function create_custom_post_type() {
 			'post_type' => 'custom_post_type',
 			'post_title'   =>$request['title'],
 			'post_content' => $request['editor'],
-			'post_status' => $request['status'],
+			'post_status' => 'publish',
 			'post_excerpt' => $request['excerpt'],
 			'post_name' => $request['slug'],
 			
@@ -931,7 +931,7 @@ function create_custom_post_type() {
 			'post_type' => 'custom_post_type',
 			'post_title'   =>$request['title'],
 			'post_content' => $request['editor'],
-			'post_status' => $request['status'],
+			'post_status' => 'publish',
 			'post_excerpt' => $request['excerpt'],
 			'post_name' => $request['slug'],
 			// 'post_author' => 1,
@@ -946,9 +946,9 @@ function create_custom_post_type() {
 			if ( empty( $args['post_content'] ) ) {
 				$error->add( 'post_content', 'content is required',array('status' => 404) );
 			}
-			if ( empty( $args['post_status'] ) ) {
-				$error->add( 'post_status', 'status is required' ,array('status' => 404));
-			}
+			// if ( empty( $args['post_status'] ) ) {
+			// 	$error->add( 'post_status', 'status is required' ,array('status' => 404));
+			// }
 			if ( count( $error->get_error_messages() )>0 ) {
 				
 				return $error;
